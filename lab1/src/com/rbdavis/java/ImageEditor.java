@@ -1,8 +1,10 @@
 package com.rbdavis.java;
 
-public class Main {
+public class ImageEditor {
+
 
     public static void main(String[] args) {
-	// write your code here
+
+        System.out.println("Hello world");
     }
 }
