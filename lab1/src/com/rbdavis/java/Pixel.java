@@ -9,6 +9,13 @@ public class Pixel {
 
     final int NUM_COLORS = 3;
 
+    public Pixel()
+    {
+        this.r = new Color();
+        this.g = new Color();
+        this.b = new Color();
+    }
+
     public Pixel(int r, int g, int b)
     {
         this.r = new Color(r);
@@ -63,14 +70,15 @@ public class Pixel {
         return (this.r == other.r) && (this.g == other.g) && (this.b == other.b);
     }
 
+    @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.r.getVal());
+        sb.append(String.format("%03d", this.r.getVal()));
         sb.append(" ");
-        sb.append(this.g.getVal());
+        sb.append(String.format("%03d", this.g.getVal()));
         sb.append(" ");
-        sb.append(this.b.getVal());
+        sb.append(String.format("%03d", this.b.getVal()));
         sb.append(" ");
 
         return sb.toString();
