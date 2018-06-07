@@ -1,6 +1,7 @@
 package com.rbdavis.java;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Image
 {
@@ -43,7 +44,7 @@ public class Image
 
     public Pixel[][] getPixels()
     {
-        return pixels;
+        return this.pixels;
     }
 
     public void setPixels(Pixel[][] pixels)
@@ -51,9 +52,9 @@ public class Image
         this.pixels = pixels;
     }
 
-    public void addPixel(int x, int y, int r, int g, int b)
+    public void addPixel(int i, int j, int r, int g, int b)
     {
-        this.pixels[x][y] = new Pixel(r, g, b);
+        this.pixels[i][j] = new Pixel(r, g, b);
     }
 
     public void invert()
@@ -86,5 +87,23 @@ public class Image
     public void motionBlur()
     {
 
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Image:\n");
+        sb.append("\tHeight: " + height + "\n");
+        sb.append("\tWidth: " + width + "\n");
+//        sb.append("\tPixels:\n");
+//        for (int i = 0; i < height; i++)
+//        {
+//            for (int j = 0; j < width; j++)
+//            {
+//                sb.append("\t" + pixels[i][j].toString());
+//            }
+//            sb.append("\n");
+//        }
+
+        return sb.toString();
     }
 }

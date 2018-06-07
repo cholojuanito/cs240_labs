@@ -7,12 +7,26 @@ import java.io.File;
 public class ImageEditor
 {
 
-    public Image image;
+    public Image img;
 
     public static void main(String[] args)
     {
 
-        System.out.println("Hello world");
+        // The args will be, 1:inputFileName, 2:outputFileName, 3: the action to do to that file
+
+        if (args.length > 0)
+        {
+            ImageEditor ie = new ImageEditor();
+            String inputFileName = args[0];
+            //String outFileName = args[1];
+            //String action = args[2];
+
+            ie.readFromFile(inputFileName);
+        }
+        else
+        {
+            System.out.println("No arguments were given.");
+        }
     }
 
 
@@ -22,7 +36,9 @@ public class ImageEditor
 
     public void readFromFile(String fileName)
     {
-        Image img = FileReaderHelper.convertFileToImage(fileName);
+        this.img = FileReaderHelper.convertFileToImage(fileName);
+        System.out.println(this.img);
+
     }
 
     public void readFromFile(File inputFile)
@@ -32,7 +48,7 @@ public class ImageEditor
 
     private String convertImageToString()
     {
-        return FileWriterHelper.imageToString(this.image);
+        return FileWriterHelper.imageToString(this.img);
     }
 
     public void writeToFile(String fileName)

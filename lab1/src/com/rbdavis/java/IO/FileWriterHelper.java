@@ -1,6 +1,7 @@
 package com.rbdavis.java.IO;
 
 import com.rbdavis.java.Image;
+import com.rbdavis.java.Pixel;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,7 +23,6 @@ public class FileWriterHelper
 
     public void write(String output)
     {
-
         try ( FileWriter fw = new FileWriter(this.outputFile) )
         {
             fw.write(output);
@@ -39,6 +39,7 @@ public class FileWriterHelper
     {
         int imgWidth = img.getWidth();
         int imgHeight = img.getHeight();
+        Pixel[][] pixels = img.getPixels();
         StringBuilder sb = new StringBuilder();
 
         sb.append("P3\n");
@@ -52,7 +53,7 @@ public class FileWriterHelper
         {
             for(int j = 0; j < imgWidth; j++)
             {
-                output = img.pixels[i][j].toString();
+                output = pixels[i][j].toString();
                 sb.append(output);
             }
         }
