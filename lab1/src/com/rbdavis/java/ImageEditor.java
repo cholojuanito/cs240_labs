@@ -37,6 +37,7 @@ public class ImageEditor
     public void readFromFile(String fileName)
     {
         this.img = FileReaderHelper.convertFileToImage(fileName);
+        //System.out.println(FileReaderHelper.outputFileContents(fileName));
         System.out.println(this.img);
 
     }
