@@ -38,6 +38,7 @@ public class FileReaderHelper
             int imgHeight = img.getHeight();
             int imgWidth = img.getWidth();
             Pixel[][] pixels = new Pixel[imgHeight][imgWidth];
+            img.setPixels(pixels);
             s.next();
 
             int rowCount = 0; // Keeps track of the height of the Image
@@ -47,18 +48,17 @@ public class FileReaderHelper
                 int r = Integer.parseInt(s.next());
                 int g = Integer.parseInt(s.next());
                 int b = Integer.parseInt(s.next());
-                Pixel pix = new Pixel(r, g, b);
+                img.addPixel(rowCount, columnCount, r, g, b);
 
-                pixels[rowCount][columnCount] = pix;
                 columnCount++;
+                // When we reach the end of the row we continue to
+                // the next one.
                 if (columnCount == imgWidth)
                 {
                     columnCount = 0;
                     rowCount++;
                 }
             }
-
-            img.setPixels(pixels);
         }
         catch(IOException ex)
         {

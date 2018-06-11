@@ -2,12 +2,10 @@ package com.rbdavis.java;
 
 import com.rbdavis.java.IO.*;
 
-import java.io.File;
 
 public class ImageEditor
 {
-
-    public Image img;
+    public Image imgToEdit;
 
     public static void main(String[] args)
     {
@@ -18,10 +16,18 @@ public class ImageEditor
         {
             ImageEditor ie = new ImageEditor();
             String inputFileName = args[0];
-            //String outFileName = args[1];
-            //String action = args[2];
+            String outFileName = args[1];
+            String action = args[2];
+            int blurStrength = 0;
+
+            if (args.length == 4)
+            {
+                blurStrength = Integer.parseInt(args[3]);
+            }
 
             ie.readFromFile(inputFileName);
+            ie.performActionToImg(action, blurStrength);
+            ie.writeToFile(outFileName);
         }
         else
         {
@@ -30,35 +36,55 @@ public class ImageEditor
     }
 
 
+    public void performActionToImg(String action, int blurStrength)
+    {
+        final String emboss = "emboss";
+        final String invert = "invert";
+        final String motion = "motionblur";
+        final String grayscale = "grayscale";
 
+        switch (action)
+        {
+            case invert:
+                System.out.println("Inverting img...");
+                this.imgToEdit.invert();
+                System.out.println("Finished inverting!");
+                break;
+            case motion:
+                System.out.println("Motion blurring img...");
+                this.imgToEdit.motionBlur(blurStrength);
+                System.out.println("Finished motion blurring!");
+                break;
+            case grayscale:
+                System.out.println("Grayscaling img...");
+                this.imgToEdit.grayscale();
+                System.out.println("Finished grayscaling!");
+                break;
+            case emboss:
+                System.out.println("Embossing img...");
+                this.imgToEdit.emboss();
+                System.out.println("Finished embossing!");
+                break;
+            default:
+                System.out.println("The action: '" + "' is not allowed. Please try again.");
+                break;
+        }
+    }
 
-    // File IO section of this class
+    // File IO functions
 
     public void readFromFile(String fileName)
     {
-        this.img = FileReaderHelper.convertFileToImage(fileName);
+        this.imgToEdit = FileReaderHelper.convertFileToImage(fileName);
         //System.out.println(FileReaderHelper.outputFileContents(fileName));
-        System.out.println(this.img);
+        //System.out.println(this.imgToEdit);
 
     }
 
-    public void readFromFile(File inputFile)
-    {
-        FileWriterHelper fileWriter = new FileWriterHelper(inputFile);
-    }
-
-    private String convertImageToString()
-    {
-        return FileWriterHelper.imageToString(this.img);
-    }
 
     public void writeToFile(String fileName)
     {
-        FileWriterHelper fileWriter = new FileWriterHelper(fileName);
-    }
-
-    public void writeToFile(File outputFile)
-    {
-        FileWriterHelper fileWriter = new FileWriterHelper(outputFile);
+        String output = FileWriterHelper.imageToString(this.imgToEdit);
+        FileWriterHelper.write(fileName, output);
     }
 }
