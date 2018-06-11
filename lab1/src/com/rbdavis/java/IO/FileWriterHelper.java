@@ -9,33 +9,26 @@ import java.io.IOException;
 
 public class FileWriterHelper
 {
-    private File outputFile;
+    private static String relativePathToPictures = "src/com/rbdavis/java/resources/pictures/";
 
-    public FileWriterHelper(File outputFile)
+    public static void write(String outputFileName, String output)
     {
-        this.outputFile = outputFile;
-    }
-
-    public FileWriterHelper(String fileName)
-    {
-        this.outputFile = new File(fileName);
-    }
-
-    public void write(String output)
-    {
-        try ( FileWriter fw = new FileWriter(this.outputFile) )
+        String fullFilePath = relativePathToPictures + outputFileName;
+        try (FileWriter fw = new FileWriter(new File(fullFilePath)))
         {
+            System.out.println("Writing to: " + outputFileName + "...");
             fw.write(output);
+            System.out.println("Finished writing!");
         }
         catch (IOException ex)
         {
             System.out.println("Unable to write the string '" +
-                    output + "' to file '" + this.outputFile + "'"
+                    output + "' to file '" + outputFileName + "'"
                     + ":: Exception: " + ex.toString());
         }
     }
 
-    static public String imageToString(Image img)
+    public static String imageToString(Image img)
     {
         int imgWidth = img.getWidth();
         int imgHeight = img.getHeight();

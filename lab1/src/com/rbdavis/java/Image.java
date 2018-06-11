@@ -84,7 +84,7 @@ public class Image
 
     }
 
-    public void motionBlur()
+    public void motionBlur(int blurStrength)
     {
 
     }
