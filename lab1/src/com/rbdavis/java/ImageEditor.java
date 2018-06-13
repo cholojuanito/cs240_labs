@@ -84,7 +84,9 @@ public class ImageEditor
 
     public void writeToFile(String fileName)
     {
+        System.out.println("Writing to: " + fileName + "...");
         String output = FileWriterHelper.imageToString(this.imgToEdit);
         FileWriterHelper.write(fileName, output);
+        System.out.println("Finished writing!");
     }
 }

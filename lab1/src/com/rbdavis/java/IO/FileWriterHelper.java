@@ -16,9 +16,7 @@ public class FileWriterHelper
         String fullFilePath = relativePathToPictures + outputFileName;
         try (FileWriter fw = new FileWriter(new File(fullFilePath)))
         {
-            System.out.println("Writing to: " + outputFileName + "...");
             fw.write(output);
-            System.out.println("Finished writing!");
         }
         catch (IOException ex)
         {
