@@ -60,6 +60,13 @@ public class Pixel {
         this.b.setVal(avg);
     }
 
+    public void emboss(int newVal)
+    {
+        this.r.setVal(newVal);
+        this.g.setVal(newVal);
+        this.b.setVal(newVal);
+    }
+
     public void reset(int newR, int newG, int newB)
     {
 
