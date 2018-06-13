@@ -59,9 +59,9 @@ public class Image
 
     public void invert()
     {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < height; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < width; y++)
             {
                 this.pixels[x][y].invert();
             }
@@ -70,9 +70,9 @@ public class Image
 
     public void grayscale()
     {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < height; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < width; y++)
             {
                 this.pixels[x][y].grayscale();
             }
