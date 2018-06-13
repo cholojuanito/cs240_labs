@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PixelTest {
+public class PixelTest
+{
 
     private int r;
     private int g;
@@ -14,7 +15,8 @@ public class PixelTest {
     private Pixel pixelUnderTest;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp()
+    {
         r = 0;
         g = 0;
         b = 0;
@@ -22,7 +24,8 @@ public class PixelTest {
     }
 
     @Test
-    public void testSetRGB() {
+    public void testSetRGB()
+    {
         // Setup
         final int red = 255;
         final int green = 255;
@@ -37,7 +40,8 @@ public class PixelTest {
     }
 
     @Test
-    public void testInvert() {
+    public void testInvert()
+    {
         // Setup
         final int red = 0;
         final int green = 0;
@@ -51,7 +55,8 @@ public class PixelTest {
     }
 
     @Test
-    public void testGrayscale() {
+    public void testGrayscale()
+    {
         // Setup
         final int red = 0;
         final int green = 0;
@@ -65,7 +70,8 @@ public class PixelTest {
     }
 
 //    @Test
-//    public void testReset() {
+//    public void testReset()
+//    {
 //        // Setup
 //        final int newR = 0;
 //        final int newG = 0;
@@ -78,7 +84,8 @@ public class PixelTest {
 //    }
 
     @Test
-    public void testEquals() {
+    public void testEquals()
+    {
         // Setup
         final Pixel other = null;
         final boolean expectedResult = false;
@@ -91,7 +98,8 @@ public class PixelTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToString()
+    {
         // Setup
         final String expectedResult = "result";
 
