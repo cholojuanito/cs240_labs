@@ -95,8 +95,8 @@ public class Image
         2) Find the largest difference (positive or negative). We will call this maxDifference. We
             then add 128 to maxDifference. If there are multiple equal differences with differing signs
             (e.g. -3 and 3), favor the red difference first, then green, then blue.
-
             v = 128 + maxDifference
+
             If needed, we then scale v to be between 0 and 255 by doing the following:
             If v < 0, then we set v to 0.
             If v > 255, then we set v to 255.
@@ -118,7 +118,7 @@ public class Image
                     newVal = this.calculateNewVal(maxDiff);
 
                     System.out.println("TOP OR LEFT BOUNDED PIXEL");
-                    System.out.println("THE NEW VAL IS: " + newVal);
+                    System.out.println("NEW VAL IS: " + newVal + "\n");
 
                     this.pixels[x][y].emboss(newVal);
                 }
@@ -130,14 +130,16 @@ public class Image
                     int greenDiff = curr.getG().getVal() - upperLeft.getG().getVal();
                     int blueDiff = curr.getB().getVal() - upperLeft.getB().getVal();
 
-                    System.out.println("THE RED DIFF IS: " + redDiff);
-                    System.out.println("THE GREEN DIFF IS: " + greenDiff);
-                    System.out.println("THE BLUE DIFF IS: " + blueDiff);
+                    System.out.println("RED DIFF IS: " + redDiff);
+                    System.out.println("GREEN DIFF IS: " + greenDiff);
+                    System.out.println("BLUE DIFF IS: " + blueDiff);
 
-                    maxDiff = this.calculateMaxDiff(Math.abs(redDiff), Math.abs(greenDiff), Math.abs(blueDiff));
+                    maxDiff = this.calculateMaxDiff(redDiff, greenDiff, blueDiff);
+                    //maxDiff = this.calculateMaxDiff(Math.abs(redDiff), Math.abs(greenDiff), Math.abs(blueDiff));
                     newVal = this.calculateNewVal(maxDiff);
 
-                    System.out.println("THE NEW VAL IS: " + newVal);
+                    System.out.println("MAX DIFF IS: " + maxDiff);
+                    System.out.println("NEW VAL IS: " + newVal + "\n");
 
                     this.pixels[x][y].emboss(newVal);
                 }
@@ -167,15 +169,25 @@ public class Image
 
     }
 
-    private int calculateDiff(int a, int b)
-    {
-        return a - b;
-    }
-
     private int calculateMaxDiff(int redDiff, int greenDiff, int blueDiff)
     {
-        //TODO: Probably need to change this function to keep the signs of the ints.
-        return Math.max(Math.max(blueDiff, greenDiff), redDiff);
+        int absRed = Math.abs(redDiff);
+        int absG = Math.abs(greenDiff);
+        int absB = Math.abs(blueDiff);
+        int maxAbs = Math.max(Math.max(absRed, absG), absB);
+
+        if (maxAbs == absRed)
+        {
+            return redDiff;
+        }
+        else if (maxAbs == absG)
+        {
+            return greenDiff;
+        }
+        else
+        {
+            return blueDiff;
+        }
 
     }
 
