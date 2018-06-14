@@ -200,7 +200,8 @@ public class Image
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringBuilder sb = new StringBuilder("Image:\n");
         sb.append("\tHeight: " + height + "\n");
         sb.append("\tWidth: " + width + "\n");

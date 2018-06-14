@@ -4,7 +4,8 @@ package com.rbdavis.java;
  * Building block of the {@code Image} class.
  */
 
-public class Pixel {
+public class Pixel
+{
     private Color r, g, b;
 
     final int NUM_COLORS = 3;
