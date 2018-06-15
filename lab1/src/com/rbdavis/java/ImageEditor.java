@@ -18,15 +18,15 @@ public class ImageEditor
             String inputFileName = args[0];
             String outFileName = args[1];
             String action = args[2];
-            int blurStrength = 0;
+            int blurLength = -1;
 
             if (args.length == 4)
             {
-                blurStrength = Integer.parseInt(args[3]);
+                blurLength = Integer.parseInt(args[3]);
             }
 
             ie.readFromFile(inputFileName);
-            ie.performActionToImg(action, blurStrength);
+            ie.performActionToImg(action, blurLength);
             ie.writeToFile(outFileName);
         }
         else
@@ -36,7 +36,7 @@ public class ImageEditor
     }
 
 
-    public void performActionToImg(String action, int blurStrength)
+    public void performActionToImg(String action, int blurLength)
     {
         final String emboss = "emboss";
         final String invert = "invert";
@@ -51,8 +51,13 @@ public class ImageEditor
                 System.out.println("Finished inverting!");
                 break;
             case motion:
+                if(blurLength <= 0)
+                {
+                    System.out.println("Please provide a blur amount that is greater than ZERO.");
+                    return;
+                }
                 System.out.println("Motion blurring img...");
-                this.imgToEdit.motionBlur(blurStrength);
+                this.imgToEdit.motionBlur(blurLength);
                 System.out.println("Finished motion blurring!");
                 break;
             case grayscale:

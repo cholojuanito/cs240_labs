@@ -68,9 +68,11 @@ public class Pixel
         this.b.setVal(newVal);
     }
 
-    public void reset(int newR, int newG, int newB)
+    public void motionblur(int newR, int newG, int newB)
     {
-
+        this.r.setVal(newR);
+        this.g.setVal(newG);
+        this.b.setVal(newB);
     }
 
     public boolean equals(Pixel other)

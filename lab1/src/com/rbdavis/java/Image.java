@@ -135,24 +135,33 @@ public class Image
 
     }
 
-    public void motionBlur(int blurStrength)
+    /*
+    A number will be provided in the command line arguments if the command is
+    “motionblur.” We will call this number n. n must be greater than 0.
+
+    The value of each color of each pixel is the average of that color value for n pixels (from
+    the current pixel to n-1) horizontally.
+
+    Example: if we store the pixels in a 2d array, the motion blur would average each color
+    from pixel[ x ][ y ] to pixel[ x ][ y+n-1 ]
+
+    Be sure to account for the situations where one or more of the values used in the
+    computing the average do not exist. For example, if an image has width w and we are
+    considering the pixel on row r, column c, if c + n >= w, then we only average the pixels
+    up to w.
+    */
+
+    public void motionBlur(int blurLength)
     {
 
-        /*
-            A number will be provided in the command line arguments if the command is
-            “motionblur.” We will call this number n. n must be greater than 0.
+        for (int x = 0; x < height; x++)
+        {
+            for (int y = 0; y < width; y++)
+            {
 
-            The value of each color of each pixel is the average of that color value for n pixels (from
-            the current pixel to n-1) horizontally.
-
-            Example: if we store the pixels in a 2d array, the motion blur would average each color
-            from pixel[ x ][ y ] to pixel[ x ][ y+n-1 ]
-
-            Be sure to account for the situations where one or more of the values used in the
-            computing the average do not exist. For example, if an image has width w and we are
-            considering the pixel on row r, column c, if c + n >= w, then we only average the pixels
-            up to w.
-         */
+                //this.pixels[x][y].motionblur();
+            }
+        }
 
     }
 
