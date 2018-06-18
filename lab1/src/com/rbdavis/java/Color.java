@@ -13,7 +13,7 @@ package com.rbdavis.java;
 
 public class Color
 {
-    public final int INVERT_VAL = 255;
+    private final int INVERT_VAL = 255;
     private int val;
 
     public Color()

@@ -1,8 +1,5 @@
 package com.rbdavis.java;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Image
 {
     private int height, width;
@@ -153,16 +150,53 @@ public class Image
 
     public void motionBlur(int blurLength)
     {
-
+        final int EDGE = this.width - 1;
         for (int x = 0; x < height; x++)
         {
             for (int y = 0; y < width; y++)
             {
-
-                //this.pixels[x][y].motionblur();
+                int distanceToEdge = EDGE - y;
+                int numOfPixelsToAverage = blurLength;
+                if (distanceToEdge < blurLength)
+                {
+                    numOfPixelsToAverage = distanceToEdge;
+                }
+                if (distanceToEdge > 0)
+                {
+                    int[] avgs = this.gatherRGBAvgs(x, y, numOfPixelsToAverage);
+                    this.pixels[x][y].motionblur(avgs[0], avgs[1], avgs[2]);
+                }
             }
         }
+    }
 
+    private int[] gatherRGBAvgs(int currRow, int startIndex, int n)
+    {
+        int[] avgs = new int[3];
+        int[] sums = this.gatherRGBSums(currRow, startIndex, n);
+
+        avgs[0] = this.average(sums[0], n);
+        avgs[1] = this.average(sums[1], n);
+        avgs[2] = this.average(sums[2], n);
+        return avgs;
+    }
+
+    private int average(int sum, int divisor)
+    {
+        return sum/divisor;
+    }
+
+    private int[] gatherRGBSums(int currRow, int startIndex, int n)
+    {
+        int[] sums = new int[3];
+        int endIndex = startIndex + n - 1;
+        for (int i = startIndex; i < endIndex; i++)
+        {
+            sums[0] += this.pixels[currRow][i].getR().getVal();
+            sums[1] += this.pixels[currRow][i].getG().getVal();
+            sums[2] += this.pixels[currRow][i].getB().getVal();
+        }
+        return sums;
     }
 
     private int calculateMaxDiff(int redDiff, int greenDiff, int blueDiff)
@@ -187,7 +221,6 @@ public class Image
 
     }
 
-    // Default maxDiff to zero if the pixel to the upper left don't exist
     private int calculateNewVal(int maxDiff)
     {
         final int MIN_VAL = 0;
@@ -213,15 +246,15 @@ public class Image
         StringBuilder sb = new StringBuilder("Image:\n");
         sb.append("\tHeight: " + height + "\n");
         sb.append("\tWidth: " + width + "\n");
-//        sb.append("\tPixels:\n");
-//        for (int i = 0; i < height; i++)
-//        {
-//            for (int j = 0; j < width; j++)
-//            {
-//                sb.append("\t" + pixels[i][j].toString());
-//            }
-//            sb.append("\n");
-//        }
+        sb.append("\tPixels:\n");
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                sb.append("\t" + pixels[i][j].toString());
+            }
+            sb.append("\n");
+        }
 
         return sb.toString();
     }

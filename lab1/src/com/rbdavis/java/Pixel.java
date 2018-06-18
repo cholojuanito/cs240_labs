@@ -7,8 +7,7 @@ package com.rbdavis.java;
 public class Pixel
 {
     private Color r, g, b;
-
-    final int NUM_COLORS = 3;
+    private final int NUM_COLORS = 3;
 
     public Pixel()
     {
