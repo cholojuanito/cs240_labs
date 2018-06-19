@@ -76,7 +76,7 @@ public class Pixel
 
     public boolean equals(Pixel other)
     {
-        return (this.r == other.r) && (this.g == other.g) && (this.b == other.b);
+        return (this.r.getVal() == other.r.getVal()) && (this.g.getVal() == other.g.getVal()) && (this.b.getVal() == other.b.getVal());
     }
 
     @Override

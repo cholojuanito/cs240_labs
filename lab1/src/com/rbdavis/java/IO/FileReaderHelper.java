@@ -9,13 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-
-// Useful for seeing what the working directory is:
-// System.out.println("Working Directory = " + System.getProperty("user.dir"));
-
 public class FileReaderHelper
 {
-    // ALT: "lab1/src/com/rbdavis/java/resources/pictures/"
     private static String relativePathToPictures = "src/com/rbdavis/java/resources/pictures/";
 
     public static Image convertFileToImage(String inputFileName)
@@ -51,8 +46,6 @@ public class FileReaderHelper
                 img.addPixel(rowCount, columnCount, r, g, b);
 
                 columnCount++;
-                // When we reach the end of the row we continue to
-                // the next one.
                 if (columnCount == imgWidth)
                 {
                     columnCount = 0;
@@ -65,8 +58,6 @@ public class FileReaderHelper
             System.out.println("Unable to convert the file '" + inputFile.toString() + "' to an img.\n"
                     + "Exception: " + ex.toString());
         }
-
-
         return img;
     }
 
