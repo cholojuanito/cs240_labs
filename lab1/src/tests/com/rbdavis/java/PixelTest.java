@@ -36,7 +36,7 @@ public class PixelTest
         pixelUnderTest.setRGB(red, green, blue);
 
         // Verify the results
-        assertEquals(expectedPixel, pixelUnderTest);
+        assertEquals(expectedPixel.toString(), pixelUnderTest.toString());
     }
 
     @Test
@@ -46,65 +46,31 @@ public class PixelTest
         final int red = 0;
         final int green = 0;
         final int blue = 0;
-        Pixel expectedInvertedPixel = new Pixel(red, green, blue);
+        final int redInvert = 255;
+        final int greenInvert = 255;
+        final int blueInvert = 255;
+        Pixel expectedInvertedPixel = new Pixel(redInvert, greenInvert, blueInvert);
+
+        // Initialize the Pixel
+        pixelUnderTest.setRGB(red, green, blue);
+
         // Run the test
         pixelUnderTest.invert();
 
         // Verify the results
-        assertEquals(expectedInvertedPixel, pixelUnderTest);
+        assertEquals(expectedInvertedPixel.toString(), pixelUnderTest.toString());
     }
-
-    @Test
-    public void testGrayscale()
-    {
-        // Setup
-        final int red = 0;
-        final int green = 0;
-        final int blue = 0;
-        Pixel expectedGrayScalePixel = new Pixel(red, green, blue);
-        // Run the test
-        pixelUnderTest.grayscale();
-
-        // Verify the results
-        assertEquals(expectedGrayScalePixel, pixelUnderTest);
-    }
-
-//    @Test
-//    public void testReset()
-//    {
-//        // Setup
-//        final int newR = 0;
-//        final int newG = 0;
-//        final int newB = 0;
-//
-//        // Run the test
-//        pixelUnderTest.reset(newR, newG, newB);
-//
-//        // Verify the results
-//    }
 
     @Test
     public void testEquals()
     {
         // Setup
-        final Pixel other = null;
-        final boolean expectedResult = false;
+        final Pixel other = new Pixel(255, 255, 255);
+        final boolean expectedResult = true;
+        pixelUnderTest.setRGB(255, 255, 255);
 
         // Run the test
         final boolean result = pixelUnderTest.equals(other);
-
-        // Verify the results
-        assertEquals(expectedResult, result);
-    }
-
-    @Test
-    public void testToString()
-    {
-        // Setup
-        final String expectedResult = "result";
-
-        // Run the test
-        final String result = pixelUnderTest.toString();
 
         // Verify the results
         assertEquals(expectedResult, result);
