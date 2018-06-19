@@ -9,13 +9,6 @@ public class Pixel
     private Color r, g, b;
     private final int NUM_COLORS = 3;
 
-    public Pixel()
-    {
-        this.r = new Color();
-        this.g = new Color();
-        this.b = new Color();
-    }
-
     public Pixel(int r, int g, int b)
     {
         this.r = new Color(r);
@@ -38,6 +31,13 @@ public class Pixel
         return b;
     }
 
+    public void setRGB(int newVal)
+    {
+        this.r.setVal(newVal);
+        this.g.setVal(newVal);
+        this.b.setVal(newVal);
+    }
+
     public void setRGB(int red, int green, int blue)
     {
         this.r.setVal(red);
@@ -55,23 +55,17 @@ public class Pixel
     public void grayscale()
     {
         int avg = ( this.r.getVal() + this.g.getVal() + this.b.getVal() ) / NUM_COLORS;
-        this.r.setVal(avg);
-        this.g.setVal(avg);
-        this.b.setVal(avg);
+        this.setRGB(avg);
     }
 
     public void emboss(int newVal)
     {
-        this.r.setVal(newVal);
-        this.g.setVal(newVal);
-        this.b.setVal(newVal);
+        this.setRGB(newVal);
     }
 
     public void motionblur(int newR, int newG, int newB)
     {
-        this.r.setVal(newR);
-        this.g.setVal(newG);
-        this.b.setVal(newB);
+        this.setRGB(newR, newG, newB);
     }
 
     public boolean equals(Pixel other)
@@ -84,11 +78,11 @@ public class Pixel
     {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%03d", this.r.getVal()));
-        sb.append(" ");
+        sb.append("\n");
         sb.append(String.format("%03d", this.g.getVal()));
-        sb.append(" ");
+        sb.append("\n");
         sb.append(String.format("%03d", this.b.getVal()));
-        sb.append(" ");
+        sb.append("\n");
 
         return sb.toString();
     }
