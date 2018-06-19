@@ -9,9 +9,6 @@ public class ImageEditor
 
     public static void main(String[] args)
     {
-
-        // The args will be, 1:inputFileName, 2:outputFileName, 3: the action to do to that file
-
         if (args.length > 0)
         {
             ImageEditor ie = new ImageEditor();
@@ -90,7 +87,7 @@ public class ImageEditor
     public void writeToFile(String fileName)
     {
         System.out.println("Writing to: " + fileName + "...");
-        String output = FileWriterHelper.imageToString(this.imgToEdit);
+        String output = this.imgToEdit.toString();
         FileWriterHelper.write(fileName, output);
         System.out.println("Finished writing!");
     }

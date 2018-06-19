@@ -243,17 +243,22 @@ public class Image
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder("Image:\n");
-        sb.append("\tHeight: " + height + "\n");
-        sb.append("\tWidth: " + width + "\n");
-        sb.append("\tPixels:\n");
-        for (int i = 0; i < height; i++)
+        int imgWidth = this.getWidth();
+        int imgHeight = this.getHeight();
+        Pixel[][] pixels = this.getPixels();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("P3\n");
+        sb.append(imgWidth);
+        sb.append(" ");
+        sb.append(imgHeight);
+        sb.append("\n255\n");
+        for(int i = 0; i < imgHeight; i++)
         {
-            for (int j = 0; j < width; j++)
+            for(int j = 0; j < imgWidth; j++)
             {
-                sb.append("\t" + pixels[i][j].toString());
+                sb.append(pixels[i][j].toString());
             }
-            sb.append("\n");
         }
 
         return sb.toString();
