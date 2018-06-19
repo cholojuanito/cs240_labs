@@ -3,11 +3,11 @@ package com.rbdavis.java;
 
 /**
  * Building block of the {@code Pixel} class. Starts with a specified value
- * which can then be inverted.  Colors are measured with values on a scale of
- * 0 - 255.
+ * which can then be inverted or changed.
+ * Colors are measured with values on a scale of 0 - 255.
  *
  * @author Tanner Davis
- * @since 2018-05-01
+ * @since v 1.0
  * @see Pixel
  */
 

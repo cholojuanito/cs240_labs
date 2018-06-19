@@ -1,7 +1,14 @@
 package com.rbdavis.java;
 
 /**
- * Building block of the {@code Image} class.
+ * Building block of the {@code Image} class.  A {@code Pixel} is represented by
+ * 3 {@code Color}s named R, G, B.  Computers read {@code Pixel}s using the RGB
+ * system.
+ *
+ * @author Tanner Davis
+ * @since v 1.0
+ * @see Image
+ * @see Color
  */
 
 public class Pixel

@@ -1,5 +1,21 @@
 package com.rbdavis.java;
 
+/**
+ * An {@code Image} is represented by a 2d array of {@code Pixel}s
+ * with height, <b>h</b> and width, <b>w</b>.
+ * An {@code Image} can be altered by an {@code ImageEditor}.
+ * Currently, (v 1.0) an {@code Image} is saved to a {@code File} following
+ * the Netbpm PPM format (portable pixel map).  See
+ * <a href="https://en.wikipedia.org/wiki/Netpbm_format">Netbpm Format</a>
+ * for more information.
+ *
+ * @author Tanner Davis
+ * @since v 1.0
+ * @see ImageEditor
+ * @see Pixel
+ * @see Color
+ */
+
 public class Image
 {
     private int height, width;

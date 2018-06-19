@@ -2,6 +2,38 @@ package com.rbdavis.java;
 
 import com.rbdavis.java.IO.*;
 
+/**
+ * An {@code ImageEditor} can modify an {@code Image}. Currently, (v 1.0)
+ * there are 4 ways you can modify an {@code Image}.
+ * <ol>
+ *     They are:
+ *     <li>Invert, see <a href="https://en.wikipedia.org/wiki/Negative_(photography)">Image Negative</a></li>
+ *     <li>Grayscale, see <a href="https://en.wikipedia.org/wiki/Grayscale">Image Grayscale</a></li>
+ *     <li>Emboss, see <a href="https://en.wikipedia.org/wiki/Image_embossing">Image Emboss</a></li>
+ *     <li>Motion Blur, see <a href="https://en.wikipedia.org/wiki/Motion_blur">Image Motion Blur</a></li>
+ * </ol>
+ *
+ * An {@code ImageEditor} works in conjunction with a {@code FileWriterHelper} and
+ * a {@code FileReaderHelper} to read an {@code Image} in the PPM format, modify the {@code Image}
+ * using the desired modification function and then write the new {@code Image} in the PPM format.
+ *
+ * Command Line:
+ * Command line arguments follow this syntax:
+ * {@code java ImageEditor inputFileName outputFileName [options]}
+ * Options:
+ * <ul>
+ *  <li>grayscale</li>
+ *  <li>invert</li>
+ *  <li>emboss</li>
+ *  <li>motionblur {@code (int)}blurLength</li>
+ * </ul>
+ *
+ * @author Tanner Davis
+ * @since v 1.0
+ * @see Image
+ * @see FileWriterHelper
+ * @see FileReaderHelper
+ */
 
 public class ImageEditor
 {
@@ -77,10 +109,9 @@ public class ImageEditor
 
     public void readFromFile(String fileName)
     {
+        System.out.println("Opening: " + fileName + "...");
         this.imgToEdit = FileReaderHelper.convertFileToImage(fileName);
-        //System.out.println(FileReaderHelper.outputFileContents(fileName));
-        //System.out.println(this.imgToEdit);
-
+        System.out.println("Opened!");
     }
 
 
