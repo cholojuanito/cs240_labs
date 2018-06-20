@@ -1,25 +1,42 @@
 package com.rbdavis.java.spell;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class SpellCorrector implements ISpellCorrector
 {
+    private Words dictionary;
+
+    public SpellCorrector()
+    {
+        this.dictionary = new Words();
+    }
 
     /**
      * Tells this {@code SpellCorrector} to use the given file as its dictionary
      * for generating suggestions.
-     * @param fileName File containing the words to be used
+     * @param fileName File containing the dictionary to be used
      * @throws IOException If the file cannot be read
      */
     public void useDictionary(String fileName) throws IOException
     {
-        try
+        File dictionaryFile = new File(fileName);
+        try(Scanner s = new Scanner(dictionaryFile))
         {
-
+            //TODO: Maybe use a delimiter?
+            String word;
+            while (s.hasNext())
+            {
+                word = s.next().toLowerCase();
+                this.dictionary.add(word);
+            }
         }
-        catch(Exception e) //TODO: Change to IOException
+        catch(Exception e)
         {
-
+            System.out.println("Was not able to read " + fileName + ".\n"
+                + "Exception: " + e.toString()
+            );
         }
     }
 

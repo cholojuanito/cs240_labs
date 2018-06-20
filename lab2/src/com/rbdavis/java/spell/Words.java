@@ -1,23 +1,20 @@
 package com.rbdavis.java.spell;
 
-import java.io.File;
 import java.util.SortedSet;
 
 public class Words implements ITrie
 {
-    private File file;
-    private Node root;
+    private WordNode root;
     private int nodeCount;
     private int wordCount;
     private SortedSet<String> prevWords;
 
     public Words()
     {
-
-    }
-    public Words(File file)
-    {
-        this.file = file;
+        this.root = null;
+        nodeCount = 0;
+        wordCount = 0;
+        prevWords = null;
     }
 
     public void add(String word)
@@ -37,12 +34,12 @@ public class Words implements ITrie
 
     public int getWordCount()
     {
-        return 1;
+        return this.wordCount;
     }
 
     public int getNodeCount()
     {
-        return 1;
+        return this.nodeCount;
     }
 
     @Override
@@ -65,11 +62,11 @@ public class Words implements ITrie
 
 
 
-    public class Node implements ITrie.INode
+    public class WordNode implements ITrie.INode
     {
         int frequency;
         String substr;
-        Node[] letters = new Node[26];
+        WordNode[] letters = new WordNode[26];
 
         public int getValue()
         {
