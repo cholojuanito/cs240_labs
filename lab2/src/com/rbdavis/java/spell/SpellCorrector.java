@@ -6,11 +6,11 @@ import java.util.Scanner;
 
 public class SpellCorrector implements ISpellCorrector
 {
-    private Words dictionary;
+    private Dictionary dictionary;
 
     public SpellCorrector()
     {
-        this.dictionary = new Words();
+        this.dictionary = new Dictionary();
     }
 
     /**
@@ -24,7 +24,6 @@ public class SpellCorrector implements ISpellCorrector
         File dictionaryFile = new File(fileName);
         try(Scanner s = new Scanner(dictionaryFile))
         {
-            //TODO: Maybe use a delimiter?
             String word;
             while (s.hasNext())
             {
@@ -32,12 +31,14 @@ public class SpellCorrector implements ISpellCorrector
                 this.dictionary.add(word);
             }
         }
-        catch(Exception e)
+        catch(IOException e)
         {
-            System.out.println("Was not able to read " + fileName + ".\n"
-                + "Exception: " + e.toString()
-            );
+            throw e;
         }
+
+
+        System.out.println(this.dictionary.toString());
+
     }
 
     /**
