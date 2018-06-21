@@ -31,43 +31,48 @@ public class SpellCorrector implements ISpellCorrector
                 this.dictionary.add(word);
             }
         }
-        catch(IOException e)
-        {
-            throw e;
-        }
-
-
-        System.out.println(this.dictionary.toString());
-
     }
 
     /**
      * Suggest a word from the dictionary that most closely matches
      * {@code inputWord}
-     * @param inputWord
+     * @param inputWord The word to search for
      * @return The suggestion or null if there is no similar word in the dictionary
      */
     public String suggestSimilarWord(String inputWord)
     {
-        return inputWord;
+        Dictionary.WordNode foundWord = this.dictionary.find(inputWord);
+        if(foundWord != null)
+        {
+            return foundWord.getSubStr();
+        }
+        else
+        {
+            return null;
+        }
     }
 
-    public void insertion()
+    public void editWord()
     {
 
     }
 
-    public void deletion()
+    private void insertion()
     {
 
     }
 
-    public void transposition()
+    private void deletion()
     {
 
     }
 
-    public void alteration()
+    private void transposition()
+    {
+
+    }
+
+    private void alteration()
     {
 
     }

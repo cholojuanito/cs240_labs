@@ -10,7 +10,11 @@ public class Dictionary implements ITrie
     private int wordCount;
     private SortedSet<String> words;
 
-    private final char NINTEY_SEVEN = 'a';
+    /* The ASCII val of ['a'-'z'] is 97 - 123.
+     * Subtracting 97 will put the index between 0-25
+     * One index for each letter of the alphabet.
+     */
+    private final char NINETY_SEVEN = 'a';
 
     public Dictionary()
     {
@@ -43,17 +47,16 @@ public class Dictionary implements ITrie
         WordNode n = this.root;
         for (int i = 0; i < wordSize; i++)
         {
-            // The ASCII val of 'a' is 97.
-            // Subtracting 97 will put the index between 0-25
-            int letterIndex = word.charAt(i) - NINTEY_SEVEN;
-            if(n.letters[letterIndex] == null)
+            int letterIndex = word.charAt(i) - NINETY_SEVEN;
+            if (n.letters[letterIndex] == null)
             {
                 n.letters[letterIndex] = new WordNode();
-                n.letters[letterIndex].setSubStr(word.substring(0, i + 1));
+                String wordSubStr = word.substring(0, i + 1);
+                n.letters[letterIndex].setSubStr(wordSubStr);
                 nodeCount++;
-                if(i == lastIndex)
+                if (i == lastIndex)
                 {
-                    n.letters[letterIndex].setSubStr(word.substring(0, i + 1));
+                    n.letters[letterIndex].setSubStr(wordSubStr);
                     n.letters[letterIndex].incrementFrequency();
                     wordCount++;
                 }
@@ -61,7 +64,7 @@ public class Dictionary implements ITrie
             }
             else
             {
-                if(i == lastIndex)
+                if (i == lastIndex)
                 {
                     n.letters[letterIndex].incrementFrequency();
                 }
@@ -75,7 +78,30 @@ public class Dictionary implements ITrie
 
     public WordNode find(String word)
     {
-         return new WordNode();
+        int wordSize = word.length();
+        int lastIndex = word.length() - 1;
+
+        WordNode n = this.root;
+        for (int i = 0; i < wordSize; i++)
+        {
+            int letterIndex = word.charAt(i) - NINETY_SEVEN;
+            if (n.letters[letterIndex] != null)
+            {
+                if (i == lastIndex)
+                {
+                    if(n.letters[letterIndex].getValue() > 0)
+                    {
+                        return n.letters[letterIndex];
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                n = n.letters[letterIndex];
+            }
+        }
+        return null;
     }
 
     public int getWordCount()
@@ -144,6 +170,11 @@ public class Dictionary implements ITrie
         public void setSubStr(String subStr)
         {
             this.subStr = subStr;
+        }
+
+        public String getSubStr()
+        {
+            return this.subStr;
         }
     }
 
