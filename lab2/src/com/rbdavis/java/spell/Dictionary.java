@@ -6,9 +6,8 @@ import java.util.TreeSet;
 public class Dictionary implements ITrie
 {
     private WordNode root;
-    private int nodeCount;
-    private int wordCount;
     private SortedSet<String> words;
+    private int nodeCount;
 
     /* The ASCII val of ['a'-'z'] is 97 - 123.
      * Subtracting 97 will put the index between 0-25
@@ -19,9 +18,8 @@ public class Dictionary implements ITrie
     public Dictionary()
     {
         this.root = new WordNode();
-        nodeCount = 1;
-        wordCount = 1;
         words = new TreeSet<>();
+        nodeCount = 1;
     }
 
     /* The idea:
@@ -50,17 +48,13 @@ public class Dictionary implements ITrie
             int letterIndex = word.charAt(i) - NINETY_SEVEN;
             if (n.letters[letterIndex] == null)
             {
-                n.letters[letterIndex] = new WordNode();
                 String wordSubStr = word.substring(0, i + 1);
-                n.letters[letterIndex].setSubStr(wordSubStr);
-                nodeCount++;
+                this.addAWordNode(n, letterIndex, wordSubStr);
                 if (i == lastIndex)
                 {
-                    n.letters[letterIndex].setSubStr(wordSubStr);
                     n.letters[letterIndex].incrementFrequency();
-                    wordCount++;
                 }
-                n = n.letters[letterIndex];
+                n = nextNode(n, letterIndex);
             }
             else
             {
@@ -70,10 +64,22 @@ public class Dictionary implements ITrie
                 }
                 else
                 {
-                    n = n.letters[letterIndex];
+                    n = nextNode(n, letterIndex);
                 }
             }
         }
+    }
+
+    private void addAWordNode(WordNode n, int letterIndex, String subStr)
+    {
+        n.letters[letterIndex] = new WordNode();
+        n.letters[letterIndex].setSubStr(subStr);
+        nodeCount++;
+    }
+
+    private WordNode nextNode(WordNode n, int letterIndex)
+    {
+        return n.letters[letterIndex];
     }
 
     public WordNode find(String word)
@@ -98,7 +104,7 @@ public class Dictionary implements ITrie
                         return null;
                     }
                 }
-                n = n.letters[letterIndex];
+                n = nextNode(n, letterIndex);
             }
         }
         return null;
@@ -106,7 +112,7 @@ public class Dictionary implements ITrie
 
     public int getWordCount()
     {
-        return this.wordCount;
+        return this.words.size();
     }
 
     public int getNodeCount()
@@ -121,7 +127,7 @@ public class Dictionary implements ITrie
         sb.append("NUM NODES: ");
         sb.append(this.nodeCount);
         sb.append(" NUM WORDS: ");
-        sb.append(this.wordCount);
+        sb.append(this.words.size());
         sb.append("\nWORDS:\n");
 
         for(String word : this.words)
