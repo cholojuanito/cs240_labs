@@ -44,7 +44,7 @@ public class ImageEditor
         if (args.length > 0)
         {
             ImageEditor ie = new ImageEditor();
-            String inputFileName = args[0];
+            String inFileName = args[0];
             String outFileName = args[1];
             String action = args[2];
             int blurLength = -1;
@@ -54,18 +54,31 @@ public class ImageEditor
                 blurLength = Integer.parseInt(args[3]);
             }
 
-            ie.readFromFile(inputFileName);
-            ie.performActionToImg(action, blurLength);
-            ie.writeToFile(outFileName);
+            ie.run(inFileName, outFileName, action, blurLength);
         }
         else
         {
-            System.out.println("No arguments were given.");
+            System.out.println("No arguments were given. Please give the correct arguments");
         }
     }
 
+    public void run(String inputFileName, String outFileName, String action, int blurAmount)
+    {
+        this.readFromFile(inputFileName);
+        try
+        {
+            this.performActionToImg(action, blurAmount);
+            this.writeToFile(outFileName);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+        }
 
-    public void performActionToImg(String action, int blurLength)
+    }
+
+
+    private void performActionToImg(String action, int blurLength) throws Exception
     {
         final String emboss = "emboss";
         final String invert = "invert";
@@ -82,8 +95,7 @@ public class ImageEditor
             case motion:
                 if(blurLength <= 0)
                 {
-                    System.out.println("Please provide a blur amount that is greater than ZERO.");
-                    return;
+                    throw new Exception("Please provide a blur amount that is greater than ZERO.");
                 }
                 System.out.println("Motion blurring img...");
                 this.imgToEdit.motionBlur(blurLength);
@@ -107,17 +119,16 @@ public class ImageEditor
 
     // File IO functions
 
-    public void readFromFile(String fileName)
+    private void readFromFile(String fileName)
     {
         System.out.println("Opening: " + fileName + "...");
         this.imgToEdit = FileReaderHelper.convertFileToImage(fileName);
-        System.out.println("Opened!");
     }
 
 
-    public void writeToFile(String fileName)
+    private void writeToFile(String fileName)
     {
-        System.out.println("Writing to: " + fileName + "...");
+        System.out.println("Writing: " + fileName + "...");
         String output = this.imgToEdit.toString();
         FileWriterHelper.write(fileName, output);
         System.out.println("Finished writing!");

@@ -24,6 +24,7 @@ public class FileReaderHelper
     {
         Image img = new Image();
 
+        System.out.println("Reading: " + inputFile.getName() + "...");
         try (Scanner s = new Scanner(new BufferedReader(new FileReader(inputFile))))
         {
             s.useDelimiter("(\\s+)(#[^\\n]*\\n)?(\\s*)|(#[^\\n]*\\n)(\\s*)");
@@ -58,6 +59,8 @@ public class FileReaderHelper
             System.out.println("Unable to convert the file '" + inputFile.toString() + "' to an img.\n"
                     + "Exception: " + ex.toString());
         }
+
+        System.out.println("Done reading!");
         return img;
     }
 
