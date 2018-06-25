@@ -92,31 +92,6 @@ public class Image
         }
     }
 
-    /*
-    Assume an image is stored in a structure called image, with “height” rows and
-    “width” columns. For every pixel p at row r, column c (p = image[r,c]), set its red,
-    green, and blue values to the same value doing the following:
-
-    1) Calculate the differences between red, green, and blue values for the pixel and and the
-         pixel to its upper left.
-            redDiff = p.redValue - image[r-1,c-1].redValue
-            greenDiff = p.greenValue - image[r-1,c-1].greenValue
-            blueDiff = p.blueValue - image[r-1, c-1].blueValue
-
-    2) Find the largest difference (positive or negative). We will call this maxDifference. We
-        then add 128 to maxDifference. If there are multiple equal differences with differing signs
-        (e.g. -3 and 3), favor the red difference first, then green, then blue.
-        v = 128 + maxDifference
-
-        If needed, we then scale v to be between 0 and 255 by doing the following:
-        If v < 0, then we set v to 0.
-        If v > 255, then we set v to 255.
-        The pixel’s red, green, and blue values are all set to v.
-
-    Be sure to account for the situation where r-1 or c-1 is less than 0. V should be 128 in
-    this case
-     */
-
     public void emboss()
     {
         for (int x = height - 1; x >= 0; x--)
@@ -147,22 +122,6 @@ public class Image
         }
 
     }
-
-    /*
-    A number will be provided in the command line arguments if the command is
-    “motionblur.” We will call this number n. n must be greater than 0.
-
-    The value of each color of each pixel is the average of that color value for n pixels (from
-    the current pixel to n-1) horizontally.
-
-    Example: if we store the pixels in a 2d array, the motion blur would average each color
-    from pixel[ x ][ y ] to pixel[ x ][ y+n-1 ]
-
-    Be sure to account for the situations where one or more of the values used in the
-    computing the average do not exist. For example, if an image has width w and we are
-    considering the pixel on row r, column c, if c + n >= w, then we only average the pixels
-    up to w.
-    */
 
     public void motionBlur(int blurLength)
     {
