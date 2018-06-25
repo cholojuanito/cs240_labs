@@ -53,7 +53,7 @@ public class ImageEditor
             {
                 blurLength = Integer.parseInt(args[3]);
             }
-
+          
             ie.run(inFileName, outFileName, action, blurLength);
         }
         else

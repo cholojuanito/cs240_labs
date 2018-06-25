@@ -59,7 +59,7 @@ public class FileReaderHelper
             System.out.println("Unable to convert the file '" + inputFile.toString() + "' to an img.\n"
                     + "Exception: " + ex.toString());
         }
-
+      
         System.out.println("Done reading!");
         return img;
     }
