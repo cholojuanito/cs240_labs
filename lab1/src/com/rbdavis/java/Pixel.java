@@ -1,5 +1,4 @@
 package com.rbdavis.java;
-
 /**
  * Building block of the {@code Image} class.  A {@code Pixel} is represented by
  * 3 {@code Color}s named R, G, B.  Computers read {@code Pixel}s using the RGB
@@ -82,6 +81,19 @@ public class Pixel
 
     @Override
     public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.r.getVal());
+        sb.append("\n");
+        sb.append(this.g.getVal());
+        sb.append("\n");
+        sb.append(this.b.getVal());
+        sb.append("\n");
+
+        return sb.toString();
+    }
+
+    public String toStringFormat()
     {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%03d", this.r.getVal()));
