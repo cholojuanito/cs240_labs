@@ -31,6 +31,7 @@ public class SpellCorrector implements ISpellCorrector
                 this.dictionary.add(word);
             }
         }
+        System.out.println(this.dictionary.toString());
     }
 
     /**

@@ -145,16 +145,30 @@ public class Dictionary implements ITrie
     @Override
     public int hashCode()
     {
+        int primeNumber = 47;
         //TODO: Think of recursive way to do this.
         return 1;
     }
 
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object other)
     {
+        if(this == other)
+        {
+            return true;
+        }
+        if (!(other instanceof Dictionary))
+        {
+            return false;
+        }
+        Dictionary otherDictionary = (Dictionary) other;
       return false;
     }
 
+    private boolean recursiveEquals(Object o)
+    {
+        return false;
+    }
 
 
     public class WordNode implements ITrie.INode
