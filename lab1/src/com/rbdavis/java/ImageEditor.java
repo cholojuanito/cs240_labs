@@ -1,6 +1,7 @@
 package com.rbdavis.java;
 
-import com.rbdavis.java.IO.*;
+import com.rbdavis.java.IO.FileReaderHelper;
+import com.rbdavis.java.IO.FileWriterHelper;
 
 /**
  * An {@code ImageEditor} can modify an {@code Image}. Currently, (v 1.0)
@@ -97,6 +98,11 @@ public class ImageEditor
                 {
                     throw new Exception("Please provide a blur amount that is greater than ZERO.");
                 }
+                else if (blurLength == 1)
+                {
+                    // No changes need to be made to the Image.
+                  return;
+                }
                 System.out.println("Motion blurring img...");
                 this.imgToEdit.motionBlur(blurLength);
                 System.out.println("Finished motion blurring!");
@@ -112,8 +118,7 @@ public class ImageEditor
                 System.out.println("Finished embossing!");
                 break;
             default:
-                System.out.println("The action: '" + "' is not allowed. Please try again.");
-                break;
+                throw new Exception("The action: '" + "' is not allowed. Please try again.");
         }
     }
 

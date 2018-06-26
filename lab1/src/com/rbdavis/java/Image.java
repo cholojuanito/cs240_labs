@@ -125,12 +125,11 @@ public class Image
 
     public void motionBlur(int blurLength)
     {
-        final int EDGE = this.width - 1;
         for (int x = 0; x < height; x++)
         {
             for (int y = 0; y < width; y++)
             {
-                int distanceToEdge = EDGE - y;
+                int distanceToEdge = this.width - y;
                 int numOfPixelsToAverage = blurLength;
                 if (distanceToEdge < blurLength)
                 {
@@ -158,14 +157,14 @@ public class Image
 
     private int average(int sum, int divisor)
     {
-        return sum/divisor;
+        return sum / divisor;
     }
 
     private int[] gatherRGBSums(int currRow, int startIndex, int n)
     {
         int[] sums = new int[3];
         int endIndex = startIndex + n - 1;
-        for (int i = startIndex; i < endIndex; i++)
+        for (int i = startIndex; i <= endIndex; i++)
         {
             sums[0] += this.pixels[currRow][i].getR().getVal();
             sums[1] += this.pixels[currRow][i].getG().getVal();
