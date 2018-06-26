@@ -1,5 +1,4 @@
 package com.rbdavis.java.IO;
-
 import com.rbdavis.java.Image;
 import com.rbdavis.java.Pixel;
 
@@ -11,12 +10,9 @@ import java.util.Scanner;
 
 public class FileReaderHelper
 {
-    private static String relativePathToPictures = "src/com/rbdavis/java/resources/pictures/";
-
     public static Image convertFileToImage(String inputFileName)
     {
-        String filePath = relativePathToPictures + inputFileName;
-        File inputFile = new File(filePath);
+        File inputFile = new File(inputFileName);
         return FileReaderHelper.convertFileToImage(inputFile);
     }
 
@@ -59,15 +55,13 @@ public class FileReaderHelper
             System.out.println("Unable to convert the file '" + inputFile.toString() + "' to an img.\n"
                     + "Exception: " + ex.toString());
         }
-      
         System.out.println("Done reading!");
         return img;
     }
 
     public static String outputFileContents(String inputFileName)
     {
-        String filePath = relativePathToPictures + inputFileName;
-        File inputFile = new File(filePath);
+        File inputFile = new File(inputFileName);
         StringBuilder sb = new StringBuilder();
         sb.append("File Contents are:\n");
 
