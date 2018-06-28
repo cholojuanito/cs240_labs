@@ -1,7 +1,5 @@
 package com.rbdavis.java.spell;
 
-import java.util.Objects;
-
 public class Dictionary implements ITrie
 {
     private WordNode root;
@@ -29,8 +27,7 @@ public class Dictionary implements ITrie
             int letterIndex = word.charAt(i) - NINETY_SEVEN;
             if (n.children[letterIndex] == null)
             {
-                String wordSubStr = word.substring(0, i + 1);
-                this.addAWordNode(n, letterIndex, wordSubStr);
+                this.addAWordNode(n, letterIndex);
                 if (i == lastIndex)
                 {
                     wordCount++;
@@ -57,10 +54,9 @@ public class Dictionary implements ITrie
         }
     }
 
-    private void addAWordNode(WordNode n, int letterIndex, String subStr)
+    private void addAWordNode(WordNode n, int letterIndex)
     {
         n.children[letterIndex] = new WordNode();
-        n.children[letterIndex].setSubStr(subStr);
         nodeCount++;
     }
 
@@ -107,35 +103,46 @@ public class Dictionary implements ITrie
         return this.nodeCount;
     }
 
+    public char[] getAtoZ() {
+        return this.AtoZ;
+    }
+
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("NUM NODES: ");
-        sb.append(this.nodeCount);
-        sb.append(" NUM WORDS: ");
-        sb.append(this.wordCount);
-        sb.append("\nWORDS:\n");
-        this.toStringWords(this.root, sb);
-        return sb.toString();
+        StringBuilder output = new StringBuilder();
+        StringBuilder currWord = new StringBuilder();
+        output.append("NUM NODES: ");
+        output.append(this.nodeCount);
+        output.append(" NUM WORDS: ");
+        output.append(this.wordCount);
+        output.append("\nWORDS:\n");
+        this.toStringWords(this.root, output, currWord);
+        return output.toString();
     }
 
-    private void toStringWords(WordNode n, StringBuilder sb)
+    private void toStringWords(WordNode n, StringBuilder output, StringBuilder currWord)
     {
         for (char c : this.AtoZ)
         {
             int letterIndex = c - NINETY_SEVEN;
             if(n.children[letterIndex] != null)
             {
+                currWord.append(c);
                 if(n.children[letterIndex].getValue() > 0)
                 {
-                    sb.append(n.children[letterIndex].getSubStr());
-                    sb.append(" ");
-                    sb.append(n.children[letterIndex].getValue());
-                    sb.append("\n");
+                    output.append(currWord.toString());
+                    output.append(" ");
+                    output.append(n.children[letterIndex].getValue()).append("\n");
                 }
-                this.toStringWords(this.nextNode(n, letterIndex), sb);
+                this.toStringWords(this.nextNode(n, letterIndex), output, currWord);
             }
+        }
+
+        if(n != this.root)
+        {
+            int lastIndex = currWord.toString().length() - 1;
+            currWord.deleteCharAt(lastIndex);
         }
     }
 
@@ -155,28 +162,28 @@ public class Dictionary implements ITrie
             return false;
         }
         Dictionary other = (Dictionary) o;
-        return this.nodeCount == other.nodeCount &&
-                Objects.equals(this.root, other.root) &&
-                Objects.equals(this.wordCount, other.wordCount);
+        if (this.wordCount != other.wordCount && this.nodeCount != other.nodeCount)
+        {
+            return false;
+        }
+        return  this.equalTrieTrees(this.root, other.root);
+    }
+
+    private boolean equalTrieTrees(WordNode n1, WordNode n2)
+    {
+        return false;
     }
 
     @Override
     public int hashCode()
     {
-        // TODO: ask if this is okay!
-        return Objects.hash(this.root, this.wordCount, this.nodeCount);
-    }
-
-    private boolean equalTrieTrees(Dictionary other)
-    {
-        return false;
+        return 31 * this.nodeCount * this.wordCount;
     }
 
 
     public class WordNode implements ITrie.INode
     {
         int frequency;
-        String subStr;
         WordNode[] children = new WordNode[26];
 
         public int getValue()
@@ -187,16 +194,6 @@ public class Dictionary implements ITrie
         public void incrementFrequency()
         {
             this.frequency++;
-        }
-
-        public void setSubStr(String subStr)
-        {
-            this.subStr = subStr;
-        }
-
-        public String getSubStr()
-        {
-            return this.subStr;
         }
     }
 
