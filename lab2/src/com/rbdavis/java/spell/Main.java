@@ -16,6 +16,13 @@ class Main
         try
         {
             corrector.useDictionary(dictionaryFileName);
+            String suggestion = corrector.suggestSimilarWord(inputWord);
+            if (suggestion == null)
+            {
+                suggestion = "No similar word found";
+            }
+
+            System.out.println("Suggestion is: " + suggestion);
         }
         catch(IOException e)
         {
@@ -23,13 +30,5 @@ class Main
                     + "IOException: " + e.toString()
             );
         }
-
-        String suggestion = corrector.suggestSimilarWord(inputWord);
-        if (suggestion == null)
-        {
-            suggestion = "No similar word found";
-        }
-
-        System.out.println("Suggestion is: " + suggestion);
     }
 }
