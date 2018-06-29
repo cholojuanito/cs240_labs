@@ -23,7 +23,8 @@ public class Dictionary implements ITrie
         int wordSize = word.length();
         int lastIndex = word.length() - 1;
         WordNode n = this.root;
-        for (int i = 0; i < wordSize; i++) {
+        for (int i = 0; i < wordSize; i++)
+        {
             int letterIndex = word.charAt(i) - NINETY_SEVEN;
             if (n.children[letterIndex] == null)
             {
@@ -65,7 +66,7 @@ public class Dictionary implements ITrie
         return n.children[letterIndex];
     }
 
-    public WordNode find(String word)
+    public ITrie.INode find(String word)
     {
         int wordSize = word.length();
         int lastIndex = word.length() - 1;
@@ -88,6 +89,10 @@ public class Dictionary implements ITrie
                     }
                 }
                 n = nextNode(n, letterIndex);
+            }
+            else
+            {
+                return null;
             }
         }
         return null;
