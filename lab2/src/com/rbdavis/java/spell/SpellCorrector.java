@@ -8,8 +8,7 @@ import java.util.TreeSet;
 
 public class SpellCorrector implements ISpellCorrector
 {
-    private Dictionary dictionary;
-    private SortedSet<String> wordEditsDistance1, wordEditsDistance2;
+    public Dictionary dictionary;
 
     public SpellCorrector()
     {
@@ -28,11 +27,10 @@ public class SpellCorrector implements ISpellCorrector
         System.out.println("Opening: " + fileName + "...");
         Scanner s = new Scanner(dictionaryFile);
         String word;
-        System.out.println("Opened!");
         System.out.println("Adding words to dictionary...");
         while (s.hasNext())
         {
-            word = s.next().toLowerCase();
+            word = s.next().toLowerCase().trim();
             this.dictionary.add(word);
         }
         System.out.println("Finished adding words!");
@@ -47,32 +45,33 @@ public class SpellCorrector implements ISpellCorrector
      */
     public String suggestSimilarWord(String inputWord)
     {
+        if(inputWord == null || inputWord.trim().equals(""))
+        {
+            return null;
+        }
         String foundWord;
         String lowerCaseWord = inputWord.toLowerCase();
         System.out.println("Attempting to find: '" + lowerCaseWord + "'...");
         ITrie.INode foundWordNode = this.dictionary.find(lowerCaseWord);
         if(foundWordNode != null)
         {
-            System.out.println("Found!");
             return inputWord;
         }
 
-        foundWord = this.tryEditDistance1(lowerCaseWord);
+        foundWord = this.tryEdits(lowerCaseWord);
         if( foundWord != null)
         {
-            System.out.println("Found!");
             return foundWord;
         }
         return null;
     }
 
-    private String tryEditDistance1(String lowerCaseInputWord)
+    private String tryEdits(String lowerCaseInputWord)
     {
         String suggestedWord;
         SortedSet<String> wordEditsDistance1 = new TreeSet<>();
         System.out.println("Editing word up to 1 index...");
         this.gatherWordEditsDistance1(lowerCaseInputWord, wordEditsDistance1);
-        System.out.println("Done editing!");
         suggestedWord = this.suggestAnEditedWord(wordEditsDistance1);
         if(suggestedWord == null)
         {
@@ -88,7 +87,6 @@ public class SpellCorrector implements ISpellCorrector
         SortedSet<String> wordEditsDistance2 = new TreeSet<>();
         System.out.println("Editing word up to 2 indices...");
         this.gatherWordEditsDistance2(editedWordsDistance1, wordEditsDistance2);
-        System.out.println("Done editing!");
         suggestedWord = this.suggestAnEditedWord(wordEditsDistance2);
         return suggestedWord;
     }
@@ -111,7 +109,6 @@ public class SpellCorrector implements ISpellCorrector
                 }
             }
         }
-        System.out.println("Done!");
         return suggestion;
     }
 
