@@ -54,7 +54,7 @@ public class SpellCorrector implements ISpellCorrector
         ITrie.INode foundWordNode = this.dictionary.find(lowerCaseWord);
         if(foundWordNode != null)
         {
-            return inputWord;
+            return lowerCaseWord;
         }
 
         foundWord = this.tryEdits(lowerCaseWord);
