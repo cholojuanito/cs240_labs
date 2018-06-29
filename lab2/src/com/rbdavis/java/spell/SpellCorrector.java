@@ -47,130 +47,145 @@ public class SpellCorrector implements ISpellCorrector
      */
     public String suggestSimilarWord(String inputWord)
     {
+        String foundWord;
         String lowerCaseWord = inputWord.toLowerCase();
         System.out.println("Attempting to find: '" + lowerCaseWord + "'...");
-        Dictionary.WordNode foundWord = this.dictionary.find(lowerCaseWord);
-        if(foundWord != null)
+        ITrie.INode foundWordNode = this.dictionary.find(lowerCaseWord);
+        if(foundWordNode != null)
         {
             System.out.println("Found!");
-            return foundWord.getSubStr();
+            return inputWord;
         }
-        // Try by editing up to one index.
+
         foundWord = this.tryEditDistance1(lowerCaseWord);
         if( foundWord != null)
         {
-            return foundWord.getSubStr();
-        }
-        // Try by editing up to two indices
-        foundWord = this.tryEditDistance2(lowerCaseWord);
-        if( foundWord != null)
-        {
-            return foundWord.getSubStr();
-        }
-            return null;
-    }
-
-    private Dictionary.WordNode tryEditDistance1(String lowerCaseInputWord)
-    {
-        Dictionary.WordNode foundWord;
-        this.gatherWordEditsDistance1(lowerCaseInputWord);
-        for(String word : this.wordEditsDistance1)
-        {
-            foundWord = this.dictionary.find(word);
-            if(foundWord != null)
-            {
-                System.out.println("Found!");
-                return foundWord;
-            }
+            System.out.println("Found!");
+            return foundWord;
         }
         return null;
     }
 
-    private Dictionary.WordNode tryEditDistance2(String lowerCaseInputWord)
+    private String tryEditDistance1(String lowerCaseInputWord)
     {
-        Dictionary.WordNode foundWord;
-        this.gatherWordEditsDistance2(lowerCaseInputWord);
-        for(String word : this.wordEditsDistance2)
-        {
-            foundWord = this.dictionary.find(word);
-            if(foundWord != null)
-            {
-                System.out.println("Found!");
-                return foundWord;
-            }
-        }
-        return null;
-    }
-
-    private void gatherWordEditsDistance1(String word)
-    {
+        String suggestedWord;
+        SortedSet<String> wordEditsDistance1 = new TreeSet<>();
         System.out.println("Editing word up to 1 index...");
-        this.wordEditsDistance1 = new TreeSet<>();
-        this.insertion(word, 1);
-        this.deletion(word, 1);
-        this.alteration(word, 1);
-        this.transposition(word, 1);
+        this.gatherWordEditsDistance1(lowerCaseInputWord, wordEditsDistance1);
         System.out.println("Done editing!");
+        suggestedWord = this.suggestAnEditedWord(wordEditsDistance1);
+        if(suggestedWord == null)
+        {
+            // Try editing up to two indices
+            suggestedWord = this.tryEditDistance2(wordEditsDistance1);
+        }
+        return suggestedWord;
     }
 
-    private void gatherWordEditsDistance2(String word)
+    private String tryEditDistance2(SortedSet<String> editedWordsDistance1)
     {
+        String suggestedWord;
+        SortedSet<String> wordEditsDistance2 = new TreeSet<>();
         System.out.println("Editing word up to 2 indices...");
-        this.wordEditsDistance2 = new TreeSet<>();
-        this.insertion(word, 2);
-        this.deletion(word, 2);
-        this.alteration(word, 2);
-        this.transposition(word, 2);
+        this.gatherWordEditsDistance2(editedWordsDistance1, wordEditsDistance2);
         System.out.println("Done editing!");
-
+        suggestedWord = this.suggestAnEditedWord(wordEditsDistance2);
+        return suggestedWord;
     }
 
-    private void insertion(String word, int distance)
+    private String suggestAnEditedWord(SortedSet<String> editedWords)
     {
-        if (distance == 1)
+        String suggestion = null;
+        int runningMaxFrequency = 0;
+        System.out.println("Comparing edited words...");
+        for (String word : editedWords)
         {
-
+            ITrie.INode foundWordNode = this.dictionary.find(word);
+            if(foundWordNode != null)
+            {
+                int nodeFrequency = foundWordNode.getValue();
+                if(nodeFrequency > runningMaxFrequency)
+                {
+                    runningMaxFrequency = nodeFrequency;
+                    suggestion = word;
+                }
+            }
         }
-        else
-        {
-
-        }
-
+        System.out.println("Done!");
+        return suggestion;
     }
 
-    private void deletion(String word, int distance)
+    private void gatherWordEditsDistance1(String word, SortedSet<String> editedWords)
     {
-        if (distance == 1)
-        {
+        this.deletion(word, editedWords);
+        this.transposition(word, editedWords);
+        this.alteration(word, editedWords);
+        this.insertion(word, editedWords);
+    }
 
-        }
-        else
+    private void gatherWordEditsDistance2(SortedSet<String> editedWordsDistance1, SortedSet<String> editedWordsDistance2)
+    {
+        for (String editedWord : editedWordsDistance1)
         {
-
+            this.gatherWordEditsDistance1(editedWord, editedWordsDistance2);
         }
     }
 
-    private void transposition(String word, int distance)
+    private void deletion(String word, SortedSet<String> editedWords)
     {
-        if (distance == 1)
+        int wordLength = word.length();
+        for (int i = 0; i < wordLength; i++)
         {
-
-        }
-        else
-        {
-
+            StringBuilder newWord = new StringBuilder(word);
+            newWord.deleteCharAt(i);
+            editedWords.add(newWord.toString());
         }
     }
 
-    private void alteration(String word, int distance)
+    private void transposition(String word, SortedSet<String> editedWords)
     {
-        if (distance == 1)
+        int wordLengthMinusOne = word.length() - 1;
+        for (int i = 0; i < wordLengthMinusOne; i++)
         {
-
+            StringBuilder newWord = new StringBuilder(word);
+            char first = word.charAt(i);
+            char second = word.charAt(i + 1);
+            newWord.deleteCharAt(i + 1);
+            newWord.deleteCharAt(i);
+            newWord.insert(i, second);
+            newWord.insert(i + 1, first);
+            editedWords.add(newWord.toString());
         }
-        else
-        {
+    }
 
+    private void alteration(String word, SortedSet<String> editedWords)
+    {
+        int wordLength = word.length();
+        char[] AtoZ = this.dictionary.getAtoZ();
+        for (int i = 0; i < wordLength; i++)
+        {
+            for(char c : AtoZ)
+            {
+                StringBuilder newWord = new StringBuilder(word);
+                newWord.deleteCharAt(i);
+                newWord.insert(i, c);
+                editedWords.add(newWord.toString());
+            }
+        }
+    }
+
+    private void insertion(String word, SortedSet<String> editedWords)
+    {
+        int wordLengthPlusOne = word.length() + 1;
+        char[] AtoZ = this.dictionary.getAtoZ();
+        for (int i = 0; i < wordLengthPlusOne; i++)
+        {
+            for(char c : AtoZ)
+            {
+                StringBuilder newWord = new StringBuilder(word);
+                newWord.insert(i, c);
+                editedWords.add(newWord.toString());
+            }
         }
     }
 }
