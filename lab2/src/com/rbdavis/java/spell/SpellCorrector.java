@@ -34,7 +34,6 @@ public class SpellCorrector implements ISpellCorrector
             this.dictionary.add(word);
         }
         System.out.println("Finished adding words!");
-        System.out.println(this.dictionary.toString());
     }
 
     /**
