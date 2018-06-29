@@ -41,7 +41,7 @@ public class Dictionary implements ITrie
                 if (i == lastIndex)
                 {
                     // This word is still a new word.
-                    if(n.children[letterIndex].getValue() < 1)
+                    if (n.children[letterIndex].getValue() < 1)
                     {
                         wordCount++;
                     }
@@ -79,7 +79,7 @@ public class Dictionary implements ITrie
             {
                 if (i == lastIndex)
                 {
-                    if(n.children[letterIndex].getValue() > 0)
+                    if (n.children[letterIndex].getValue() > 0)
                     {
                         return n.children[letterIndex];
                     }
@@ -117,11 +117,6 @@ public class Dictionary implements ITrie
     {
         StringBuilder output = new StringBuilder();
         StringBuilder currWord = new StringBuilder();
-        output.append("NUM NODES: ");
-        output.append(this.nodeCount);
-        output.append(" NUM WORDS: ");
-        output.append(this.wordCount);
-        output.append("\nWORDS:\n");
         this.toStringWords(this.root, output, currWord);
         return output.toString();
     }
@@ -131,10 +126,10 @@ public class Dictionary implements ITrie
         for (char c : this.AtoZ)
         {
             int letterIndex = c - NINETY_SEVEN;
-            if(n.children[letterIndex] != null)
+            if (n.children[letterIndex] != null)
             {
                 currWord.append(c);
-                if(n.children[letterIndex].getValue() > 0)
+                if (n.children[letterIndex].getValue() > 0)
                 {
                     output.append(currWord.toString());
                     output.append(" ");
@@ -144,7 +139,7 @@ public class Dictionary implements ITrie
             }
         }
 
-        if(n != this.root)
+        if (n != this.root)
         {
             int lastIndex = currWord.toString().length() - 1;
             currWord.deleteCharAt(lastIndex);
@@ -171,18 +166,43 @@ public class Dictionary implements ITrie
         {
             return false;
         }
-        return  this.equalTrieTrees(this.root, other.root);
+        try
+        {
+            this.equalTrieTrees(this.root, other.root);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        return true;
     }
 
-    private boolean equalTrieTrees(WordNode n1, WordNode n2)
+    private void equalTrieTrees(WordNode n, WordNode other) throws Exception
     {
-        return false;
+        for (char c : this.AtoZ)
+        {
+            int letterIndex = c - NINETY_SEVEN;
+            if (n.children[letterIndex] != null && other.children[letterIndex] == null
+                || n.children[letterIndex] == null && other.children[letterIndex] != null)
+            {
+                throw new Exception("Tries didn't have same nodes.");
+            }
+            if (n.children[letterIndex] != null && other.children[letterIndex] != null)
+            {
+                if (n.children[letterIndex].getValue() != other.children[letterIndex].getValue())
+                {
+                    throw new Exception("Tries node values were not equal.");
+                }
+                this.equalTrieTrees(this.nextNode(n, letterIndex), this.nextNode(other, letterIndex));
+            }
+        }
     }
 
     @Override
     public int hashCode()
     {
-        return 31 * this.nodeCount * this.wordCount;
+        int hash = 14;
+        return 31 * this.nodeCount * this.wordCount + hash;
     }
 
 
