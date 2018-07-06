@@ -10,9 +10,9 @@ public class EvilHangmanGame implements IEvilHangmanGame
     private String blankPattern;
     private int wordToGuessLength;
     private char currGuess;
-    private SortedSet<String> possibleWords = new TreeSet<>();
+    private Set<String> possibleWords = new HashSet<>();
     private SortedSet<String> usedLetters = new TreeSet<>();
-    private Map<String, SortedSet<String>> patternMap = new TreeMap<>();
+    private Map<String, Set<String>> patternMap = new TreeMap<>();
 
     public final static char HYPHEN = '-';
 
@@ -48,7 +48,7 @@ public class EvilHangmanGame implements IEvilHangmanGame
     }
 
     @Override
-    public SortedSet<String> makeGuess(char guess) throws GuessAlreadyMadeException
+    public Set<String> makeGuess(char guess) throws GuessAlreadyMadeException
     {
         String guessStr = Character.toString(guess);
         this.setCurrGuess(guess);
@@ -62,32 +62,30 @@ public class EvilHangmanGame implements IEvilHangmanGame
         return possibleWords;
     }
 
-    //TODO: Find an 'easier' way to do the adding of one word that matches the pattern.
     private void partitionWords()
     {
         this.patternMap.clear();
         for (String word : possibleWords)
         {
             String pattern = createPattern(word);
-            SortedSet<String> wordsThatMatchPattern = new TreeSet<>();
-            wordsThatMatchPattern.add(word);
-            for (String compareWord : possibleWords)
+            Set<String> wordsThatMatchPattern = patternMap.get(pattern);
+            if (wordsThatMatchPattern != null)
             {
-                String comparePattern = createPattern(compareWord);
-                if (comparePattern.equals(pattern))
-                {
-                    wordsThatMatchPattern.add(compareWord);
-                }
+                wordsThatMatchPattern.add(word);
             }
-            patternMap.put(pattern, wordsThatMatchPattern);
+            else
+            {
+                Set<String> newSubset = new HashSet<>();
+                newSubset.add(word);
+                patternMap.put(pattern, newSubset);
+            }
         }
     }
 
     private String createPattern(String word)
     {
         StringBuilder pattern = new StringBuilder(word);
-        int wordLength = word.length();
-        for (int i = 0; i < wordLength; i++)
+        for (int i = 0; i < wordToGuessLength; i++)
         {
             if ( word.charAt(i) != this.currGuess)
             {
@@ -101,8 +99,8 @@ public class EvilHangmanGame implements IEvilHangmanGame
     {
         String patternWithLargestSubset = this.blankPattern;
         int runningMax = 0;
-        Set<Map.Entry<String, SortedSet<String>>> entries = patternMap.entrySet();
-       for (Map.Entry<String, SortedSet<String>> entry : entries)
+        Set<Map.Entry<String, Set<String>>> entries = patternMap.entrySet();
+       for (Map.Entry<String, Set<String>> entry : entries)
        {
            int subSetSize = entry.getValue().size();
            if (subSetSize > runningMax)
@@ -110,11 +108,11 @@ public class EvilHangmanGame implements IEvilHangmanGame
                runningMax = subSetSize;
                patternWithLargestSubset = entry.getKey();
            }
-//           else if (subSetSize == runningMax)
-//           {
-//               String contendingPattern = entry.getKey();
-//               patternWithLargestSubset = settleDisputeOverNewPattern(patternWithLargestSubset, contendingPattern);
-//           }
+           else if (subSetSize == runningMax)
+           {
+               String contendingPattern = entry.getKey();
+               patternWithLargestSubset = settleDisputeOverNewPattern(patternWithLargestSubset, contendingPattern);
+           }
        }
        updateWordPattern(patternWithLargestSubset);
        possibleWords = patternMap.get(patternWithLargestSubset);
@@ -122,6 +120,10 @@ public class EvilHangmanGame implements IEvilHangmanGame
 
     private String settleDisputeOverNewPattern(String reigningChamp, String contender)
     {
+        if (reigningChamp.equals(blankPattern) && contender.equals(blankPattern))
+        {
+            return reigningChamp;
+        }
         String newChamp = reigningChamp;
         int occurrencesInContender = numOccurrencesInPattern(contender, this.currGuess);
         int occurrencesInCurrent = numOccurrencesInPattern(reigningChamp, this.currGuess);
@@ -131,10 +133,40 @@ public class EvilHangmanGame implements IEvilHangmanGame
         }
         else if (occurrencesInContender == occurrencesInCurrent)
         {
+            int lastIndex = wordToGuessLength - 1;
+            newChamp = compareRightMostLetters(reigningChamp, contender, lastIndex);
+        }
+        return newChamp;
+    }
 
+    private String compareRightMostLetters(String reigningChamp, String contender, int lastIndexToCheck)
+    {
+        String newChamp = reigningChamp;
+        if (reigningChamp.charAt(lastIndexToCheck) != currGuess && contender.charAt(lastIndexToCheck) == currGuess)
+        {
+            newChamp = contender;
+        }
+        else if (reigningChamp.charAt(lastIndexToCheck) == currGuess && contender.charAt(lastIndexToCheck) != currGuess)
+        {
+            newChamp = reigningChamp;
         }
         else
         {
+            if (lastIndexToCheck > 0)
+            {
+                compareRightMostLetters(reigningChamp, contender, lastIndexToCheck - 1);
+            }
+            else
+            {
+                if (reigningChamp.charAt(lastIndexToCheck) > contender.charAt(lastIndexToCheck))
+                {
+                    return reigningChamp;
+                }
+                else
+                {
+                    return contender;
+                }
+            }
 
         }
         return newChamp;
@@ -143,8 +175,7 @@ public class EvilHangmanGame implements IEvilHangmanGame
     private void updateWordPattern(String patternToAdd)
     {
         StringBuilder newPattern = new StringBuilder(this.wordPattern);
-        int newPatternLength = patternToAdd.length();
-        for (int i = 0; i < newPatternLength; i++)
+        for (int i = 0; i < wordToGuessLength; i++)
         {
             if (patternToAdd.charAt(i) != HYPHEN)
             {
@@ -157,8 +188,7 @@ public class EvilHangmanGame implements IEvilHangmanGame
     public int numOccurrencesInPattern(String pattern, char guess)
     {
         int occurrences = 0;
-        int patternLength = pattern.length();
-        for (int i = 0; i < patternLength; i++)
+        for (int i = 0; i < wordToGuessLength; i++)
         {
             if (pattern.charAt(i) == guess)
             {
@@ -185,6 +215,11 @@ public class EvilHangmanGame implements IEvilHangmanGame
     public SortedSet<String> getUsedLetters()
     {
         return usedLetters;
+    }
+
+    public Set<String> getPossibleWords()
+    {
+        return possibleWords;
     }
 
     public String getPattern()

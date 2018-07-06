@@ -2,25 +2,34 @@ package hangman;
 
 import java.security.InvalidParameterException;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.SortedSet;
 
 public class EvilHangmanRunTime
 {
     private EvilHangmanGame game;
     private int allowedNumGuesses;
+    private int wordSize;
 
-    public EvilHangmanRunTime(EvilHangmanGame game, int allowedNumGuesses)
+    public EvilHangmanRunTime(EvilHangmanGame game, int allowedNumGuesses, int wordSize)
     {
         this.game = game;
         this.allowedNumGuesses = allowedNumGuesses;
+        this.wordSize = wordSize;
     }
 
     public void runGame()
     {
-        SortedSet<String> possibleWords = null;
+        Set<String> possibleWords = game.getPossibleWords();
+        if (possibleWords.size() == 0)
+        {
+            System.out.println("There are no words of length " + wordSize + " available to guess. Please try a different word length.");
+            return;
+        }
         int numGuessesLeft = allowedNumGuesses;
         char guess = 'a';
 
+        System.out.println("Let the guessing begin!");
         while (numGuessesLeft > 0)
         {
             System.out.println("You have " + numGuessesLeft + " guesses left");
@@ -37,6 +46,7 @@ public class EvilHangmanRunTime
                     if (numNonHyphens == game.getPattern().length())
                     {
                         printWin(game.getPattern());
+                        break;
                     }
                     printCorrectGuess(guess, game.numOccurrencesInPattern(game.getPattern(), guess));
                 }
@@ -45,7 +55,8 @@ public class EvilHangmanRunTime
                     numGuessesLeft--;
                     if (numGuessesLeft == 0)
                     {
-                        printLoss(possibleWords.first());
+                        printLoss(possibleWords.iterator().next());
+                        break;
                     }
                     printIncorrectGuess(guess);
                 }
@@ -62,24 +73,7 @@ public class EvilHangmanRunTime
         }
     }
 
-//    private String pickAWord(SortedSet<String> possibleWords)
-//    {
-//        String endPattern = game.getPattern();
-//        for (String word : possibleWords)
-//        {
-//            int endPatternLength = endPattern.length();
-//            for (int i = 0; i < endPatternLength; i++)
-//            {
-//                if (word.charAt(i) != endPattern.charAt(i))
-//                {
-//                    return word;
-//                }
-//            }
-//        }
-//        return endPattern;
-//    }
-
-    private boolean wasCorrectGuess(SortedSet<String> possibleWords, char guess)
+    private boolean wasCorrectGuess(Set<String> possibleWords, char guess)
     {
         for (String word : possibleWords)
         {
@@ -114,7 +108,7 @@ public class EvilHangmanRunTime
     {
         Scanner input = new Scanner(System.in);
         System.out.print("Enter guess: ");
-        String guess = input.next();
+        String guess = input.next().toLowerCase();
         if (!Character.isLetter(guess.charAt(0)) || guess.length() != 1)
         {
             throw new InvalidParameterException("Invalid input! Please try again");
@@ -126,14 +120,12 @@ public class EvilHangmanRunTime
     {
         System.out.println("You win!");
         System.out.println("Word was: " + theWord);
-        System.exit(0);
     }
 
     private void printLoss(String theWord)
     {
         System.out.println("You lose!");
         System.out.println("Word was: " + theWord);
-        System.exit(0);
     }
 
     private void printCorrectGuess(char guess, int numOccurrences)

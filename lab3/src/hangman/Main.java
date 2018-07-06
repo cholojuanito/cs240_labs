@@ -1,14 +1,6 @@
-import hangman.EvilHangmanGame;
-import hangman.EvilHangmanRunTime;
-import hangman.IEvilHangmanGame;
+package hangman;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.security.InvalidParameterException;
-import java.util.Scanner;
-import java.util.SortedSet;
 
 public class Main
 {
@@ -26,11 +18,24 @@ public class Main
         else
         {
             System.out.println("An invalid number of arguments was detected! \nPlease verify your arguments and try again.");
+            System.exit(0);
         }
+
+        if (wordLength < 2)
+        {
+            System.out.println("Word length must be greater than 1! Please try again!");
+            System.exit(0);
+        }
+        if (allowedNumGuesses < 1)
+        {
+            System.out.println("Allowed number of guesses must be greater than 0! Please try again!");
+            System.exit(0);
+        }
+
         EvilHangmanGame game = new EvilHangmanGame();
         game.startGame(dictionary, wordLength);
 
-        EvilHangmanRunTime gameRunTime = new EvilHangmanRunTime(game, allowedNumGuesses);
+        EvilHangmanRunTime gameRunTime = new EvilHangmanRunTime(game, allowedNumGuesses, wordLength);
         gameRunTime.runGame();
     }
 }
